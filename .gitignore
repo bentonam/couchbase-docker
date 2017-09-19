@@ -1,0 +1,12 @@
+*.apdisk
+*.ap_
+*.log
+*.DS_Store
+*.bak
+.TemporaryItems
+dist/
+Thumbs.db
+thumbs.db
+node_modules/
+.nyc*
+coverage
