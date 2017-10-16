@@ -182,7 +182,7 @@ else
   if [[ ${CLUSTER} != *":8091" ]];then
     CLUSTER="$CLUSTER:8091"
   fi
-  printf 'Waiting for $CLUSTER to become available'
+  echo 'Waiting for $CLUSTER to become available'
   until $(curl --output /dev/null --silent --head --fail http://$CLUSTER/pools); do
     printf .
     sleep 1
@@ -201,7 +201,7 @@ else
 
   if [[ "${REBALANCE}" == "1" ]]; then
     echo Rebalancing Cluster
-    if (/opt/couchbase/bin/couchbase-cli reba lance-status --cluster $CLUSTER --user $CLUSTER_USERNAME --password  $CLUSTER_PASSWORD | grep -q running) then
+    if (/opt/couchbase/bin/couchbase-cli rebalance-status --cluster $CLUSTER --user $CLUSTER_USERNAME --password  $CLUSTER_PASSWORD | grep -q running) then
       echo Only one rebalance operation can be done at a time, waiting for the current rebalance to complete
       until $(couchbase-cli rebalance-status --cluster $CLUSTER --user $CLUSTER_USERNAME --password $CLUSTER_PASSWORD | grep -q notRunning); do
         echo .
