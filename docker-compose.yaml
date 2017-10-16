@@ -1,0 +1,46 @@
+version: '3'
+services:
+  couchbase-node1:
+    build:
+      context: .
+    container_name: couchbase-node1
+    ports:
+      - "8091-8094:8091-8094"
+      - "11210:11210"
+    environment:
+      NODE_TYPE: DEFAULT
+      CLUSTER_USERNAME: Administrator
+      CLUSTER_PASSWORD: somepassword
+      CLUSTER_NAME: My Couchbase Cluster
+      SERVICES: data,index,query,fts
+      CLUSTER_RAMSIZE: 500
+      BUCKET: ecommerce
+      BUCKET_RAMSIZE: 300
+      ENABLE_FLUSH: 1
+      SAMPLE_BUCKETS: beer-sample,travel-sample
+  couchbase-node2:
+    build:
+      context: .
+    container_name: couchbase-node2
+    depends_on:
+      - couchbase-node1
+    environment:
+      NODE_TYPE: CHILD
+      CLUSTER_USERNAME: Administrator
+      CLUSTER_PASSWORD: somepassword
+      CLUSTER: couchbase-node1
+      SERVICES: data,index,query,fts
+  couchbase-node3:
+    build:
+      context: .
+    container_name: couchbase-node3
+    depends_on:
+      - couchbase-node1
+      - couchbase-node2
+    environment:
+      NODE_TYPE: CHILD
+      CLUSTER_USERNAME: Administrator
+      CLUSTER_PASSWORD: somepassword
+      CLUSTER: couchbase-node1
+      SERVICES: data,index,query,fts
+      REBALANCE: 1
