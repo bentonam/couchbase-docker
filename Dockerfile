@@ -1,5 +1,5 @@
 # start with couchbase
-FROM couchbase:community-4.5.1
+FROM couchbase:enterprise-4.6.3
 
 # File Author / Maintainer
 MAINTAINER Aaron Benton

@@ -1,38 +1,49 @@
 # Couchbase Docker
 
+A Couchbase container running Couchbase Community Edition v4.5.1 that can be fully configured through environment variables.  See all of the environment variables below for the possible configuration combinations.  
+
+## Tags and Dockerfile
+
+Supported tags and Dockerfile links
+
+- [`latest`](https://github.com/bentonam/couchbase-docker/blob/master/Dockerfile), [`enterprise`](https://github.com/bentonam/couchbase-docker/blob/master/Dockerfile), [`enterprise-4.6.3`](https://github.com/bentonam/couchbase-docker/blob/master/Dockerfile)
+- [`community`](https://github.com/bentonam/couchbase-docker/blob/community/Dockerfile), [`community-4.5.1`](https://github.com/bentonam/couchbase-docker/blob/community/Dockerfile)
+
 ## Examples
 
 The following will start a container with all of the default values.  You will have a Couchbase Server container with the default bucket, all services running, the username is `Administrator` and the password is `password`.
 
-```
+```bash
 docker run -d --name my-couchbase -p 8091-8094:8091-8094 -p 11210:11210 bentonam/couchbase-docker
 ```
 
 If you want the default settings but also want the `beer-sample` and `travel-sample` buckets.  Note it does take a little longer to load the sample buckets.
 
-```
+```bash
 docker run -d --name my-couchbase -p 8091-8094:8091-8094 -p 11210:11210 -e SAMPLE_BUCKETS=beer-sample,travel-sample bentonam/couchbase-docker
 ```
 
 If you want to have a container running just the `data` service, with 500mb of memory in a bucket called `ecommerce`
 
-```
+```bash
 docker run -d --name my-couchbase -p 8091-8094:8091-8094 -p 11210:11210 -e CLUSTER_RAMSIZE=500 -e BUCKET_RAMSIZE=500 -e BUCKET=ecommerce -e SERVICES=data bentonam/couchbase-docker
 ```
 
 If you want to have a 3 node cluster, notice the first container configures the cluster and creates the buckets, the second is just joined to the cluster and the third is joined and rebalances the cluster.
 
-```
+```bash
 docker run -d --name couchbase-node1 -p 8091-8094:8091-8094 -p 11210:11210 -e CLUSTER_RAMSIZE=500 -e BUCKET_RAMSIZE=500 -e BUCKET=ecommerce -e SERVICES=data bentonam/couchbase-docker
 docker run -d --name couchbase-node2 --link couchbase-node1 -e SERVICES=data -e NODE_TYPE=child -e CLUSTER=couchbase-node1 bentonam/couchbase-docker
 docker run -d --name couchbase-node3 --link couchbase-node1 --link couchbase-node2 -e SERVICES=data -e NODE_TYPE=child -e CLUSTER=couchbase-node1 -e REBALANCE=1 bentonam/couchbase-docker
 ```
 
-See all of the environment variables below for the possible configuration combinations.  
+**docker-compose.yaml**
+
+```
+
+```
 
 ## Environment Variables
-
-A Couchbase container Couchbase Community Edition v4.5.1.
 
 The following environment variables are supported.  None of these environment variables are required, be sure to check the defaults:
 
@@ -53,7 +64,7 @@ The following environment variables are supported.  None of these environment va
 - `BUCKET_TYPE`: The type of bucket to create.  The default value is **couchbase**.  Valid values are:
 	- couchbase - This should almost always be used
 	- memcached - This really should never be used unless absolutely needed and justified
-- `CLUSTER`: The IP Address or Hostname of another node / container that is already in the cluster.  This is only used if `NODE_TYPE` is not `DEFAULT`. The default is an empty string. 
+- `CLUSTER`: The IP Address or Hostname of another node / container that is already in the cluster.  This is only used if `NODE_TYPE` is not `DEFAULT`. The default is an empty string.
 - `CLUSTER_FTS_RAMSIZE`: The per-node FTS service RAM quota in MB. The default value is **256**.
 - `CLUSTER_INDEX_RAMSIZE`: The per-node index services RAM quota in MB.  The default value is **256**.
 - `CLUSTER_NAME`: The name of the cluster, if none is specified an empty string is used.
@@ -115,7 +126,7 @@ The following environment variables are supported.  None of these environment va
 - `NODE_TYPE`: The type of node to bring up.  The default value is **DEFAULT**.  Valid values are:
 	- DEFAULT
 	- CHILD
-- `SAMPLE_BUCKETS`: A comma-delimited list of sample buckets to load.  The default value is an empty string.  Valid values are: 
+- `SAMPLE_BUCKETS`: A comma-delimited list of sample buckets to load.  The default value is an empty string.  Valid values are:
 	- beer-sample
 	- gamesim-sample
 	- travel-sample
