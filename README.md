@@ -6,12 +6,12 @@ A Couchbase container running Couchbase Community Edition v4.5.1 that can be ful
 
 Supported tags and Dockerfile links
 
-- [`latest`](https://github.com/bentonam/couchbase-docker/blob/master/Dockerfile), [`enterprise`](https://github.com/bentonam/couchbase-docker/blob/master/Dockerfile), [`enterprise-4.6.3`](https://github.com/bentonam/couchbase-docker/blob/master/Dockerfile)
+- [`latest`](https://github.com/bentonam/couchbase-docker/blob/master/Dockerfile), [`enterprise`](https://github.com/bentonam/couchbase-docker/blob/master/Dockerfile), [`enterprise-5.0.0`](https://github.com/bentonam/couchbase-docker/blob/master/Dockerfile) [`enterprise-4.6.3`](https://github.com/bentonam/couchbase-docker/blob/master/Dockerfile)
 - [`community`](https://github.com/bentonam/couchbase-docker/blob/community/Dockerfile), [`community-4.5.1`](https://github.com/bentonam/couchbase-docker/blob/community/Dockerfile)
 
 ## Examples
 
-The following will start a container with all of the default values.  You will have a Couchbase Server container with the default bucket, all services running, the username is `Administrator` and the password is `password`.
+The following will start a container with all of the default values.  You will have a Couchbase Server container with the default bucket, all services running, the username is `Administrator` and the password is `password`.  Additionally, there is an RBAC user created whose username is `default` and the password is `password`.
 
 ```bash
 docker run -d --name my-couchbase -p 8091-8094:8091-8094 -p 11210:11210 bentonam/couchbase-docker
@@ -126,6 +126,9 @@ The following environment variables are supported.  None of these environment va
 - `NODE_TYPE`: The type of node to bring up.  The default value is **DEFAULT**.  Valid values are:
 	- DEFAULT
 	- CHILD
+- `RBAC_USERNAME`: Specifies the username of the RBAC user to create. The default value is the name of the `BUCKET`
+- `RBAC_PASSWORD`: Specifies the password to be used for an RBAC user profile. The default value is the `CLUSTER_PASSWORD`
+- `RBAC_ROLES`: Specifies the roles to be given to an RBAC user profile.  The default value is `admin`
 - `SAMPLE_BUCKETS`: A comma-delimited list of sample buckets to load.  The default value is an empty string.  Valid values are:
 	- beer-sample
 	- gamesim-sample
