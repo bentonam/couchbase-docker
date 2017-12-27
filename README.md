@@ -7,7 +7,7 @@ A Couchbase container running Couchbase Community Edition v4.5.1 that can be ful
 Supported tags and Dockerfile links
 
 - [`latest`](https://github.com/bentonam/couchbase-docker/blob/master/Dockerfile), [`enterprise-5.0.1`](https://github.com/bentonam/couchbase-docker/blob/master/Dockerfile), [`enterprise-5.0.0`](https://github.com/bentonam/couchbase-docker/blob/master/Dockerfile) [`enterprise-5.0.0`](https://github.com/bentonam/couchbase-docker/blob/master/Dockerfile) [`enterprise-4.6.3`](https://github.com/bentonam/couchbase-docker/blob/master/Dockerfile)
-- [`community`](https://github.com/bentonam/couchbase-docker/blob/community/Dockerfile), [`community-4.5.1`](https://github.com/bentonam/couchbase-docker/blob/community/Dockerfile)
+- [`community`](https://github.com/bentonam/couchbase-docker/blob/community/Dockerfile), [`community-5.0.1`](https://github.com/bentonam/couchbase-docker/blob/community/Dockerfile),[`community-4.5.1`](https://github.com/bentonam/couchbase-docker/blob/community/Dockerfile)
 
 ## Examples
 
