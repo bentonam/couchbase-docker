@@ -9,6 +9,9 @@ SERVICES=${SERVICES:='data,index,query,fts'}
 BUCKET=${BUCKET:='default'}
 BUCKET_RAMSIZE=${BUCKET_RAMSIZE:=100}
 BUCKET_TYPE=${BUCKET_TYPE:=couchbase}
+RBAC_USERNAME=${RBAC_USERNAME:=$BUCKET}
+RBAC_PASSWORD=${RBAC_PASSWORD:=$CLUSTER_PASSWORD}
+RBAC_ROLES=${RBAC_ROLES:='admin'}
 
 sleep 2
 echo ' '
@@ -85,6 +88,19 @@ if [[ "${NODE_TYPE}" == "DEFAULT" ]]; then
     --bucket-replica=${BUCKET_REPLICA:=1} \
     --bucket-eviction-policy=${BUCKET_EVICTION_POLICY:=valueOnly} \
     --wait \
+  > /dev/null
+
+  # rbac user
+  echo Creating RBAC user $RBAC_USERNAME
+  /opt/couchbase/bin/couchbase-cli user-manage \
+    --cluster localhost:8091 \
+    --username=$CLUSTER_USERNAME \
+    --password=$CLUSTER_PASSWORD \
+    --set \
+    --rbac-username $RBAC_USERNAME \
+    --rbac-password $RBAC_PASSWORD \
+    --roles $RBAC_ROLES \
+    --auth-domain local \
   > /dev/null
 
   # setting alerts
