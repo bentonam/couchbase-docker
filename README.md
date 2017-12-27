@@ -1,6 +1,6 @@
 # Couchbase Docker
 
-A Couchbase container running Couchbase Community Edition v4.5.1 that can be fully configured through environment variables.  See all of the environment variables below for the possible configuration combinations.  
+A Couchbase container running Couchbase Enterprise Edition v5.0.1 that can be fully configured through environment variables.  See all of the environment variables below for the possible configuration combinations.  
 
 ## Tags and Dockerfile
 
