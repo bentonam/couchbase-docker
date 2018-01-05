@@ -39,8 +39,28 @@ docker run -d --name couchbase-node3 --link couchbase-node1 --link couchbase-nod
 
 **docker-compose.yaml**
 
-```
-
+```yaml
+version: '3'
+services:
+  couchbase-demo:
+    image: bentonam/couchbase-docker:enterprise
+    container_name: couchbase-demo
+    ports:
+      - "8091-8094:8091-8094"
+      - "11210:11210"
+    environment:
+      CLUSTER_USERNAME: Administrator
+      CLUSTER_PASSWORD: somepassword
+      CLUSTER_NAME: My Couchbase Cluster
+      SERVICES: data,index,query,fts
+      CLUSTER_RAMSIZE: 500
+      BUCKET: ecommerce
+      BUCKET_RAMSIZE: 300
+      SAMPLE_BUCKETS: beer-sample,travel-sample
+      NODE_INIT_INDEX_PATH: /opt/couchbase/var/lib/couchbase/indexes
+      RBAC_USERNAME: someuser
+      RBAC_PASSWORD: password123
+      RBAC_PASSWORD: bucket_full_access[ecommerce]
 ```
 
 ## Environment Variables
