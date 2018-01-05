@@ -198,8 +198,8 @@ else
   if [[ ${CLUSTER} != *":8091" ]];then
     CLUSTER="$CLUSTER:8091"
   fi
-  echo 'Waiting for $CLUSTER to become available'
-  until $(curl --output /dev/null --silent --head --fail http://$CLUSTER/pools); do
+  echo Waiting for $CLUSTER to become available
+  until $(curl --output /dev/null --silent --head --fail -u $CLUSTER_USERNAME:$CLUSTER_PASSWORD http://${CLUSTER}/pools); do
     printf .
     sleep 1
   done
