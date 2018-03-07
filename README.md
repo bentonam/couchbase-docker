@@ -6,7 +6,10 @@ A Couchbase container running Couchbase Enterprise Edition v5.0.1 that can be fu
 
 Supported tags and Dockerfile links
 
-- [`latest`](https://github.com/bentonam/couchbase-docker/blob/master/Dockerfile), [`enterprise-5.0.1`](https://github.com/bentonam/couchbase-docker/blob/master/Dockerfile), [`enterprise-5.0.0`](https://github.com/bentonam/couchbase-docker/blob/master/Dockerfile) [`enterprise-5.0.0`](https://github.com/bentonam/couchbase-docker/blob/master/Dockerfile) [`enterprise-4.6.3`](https://github.com/bentonam/couchbase-docker/blob/master/Dockerfile)
+- [`latest`](https://github.com/bentonam/couchbase-docker/blob/master/Dockerfile),
+[`enterprise`](https://github.com/bentonam/couchbase-docker/blob/master/Dockerfile),
+[`enterprise-5.1.0`](https://github.com/bentonam/couchbase-docker/blob/master/Dockerfile),
+[`enterprise-5.0.1`](https://github.com/bentonam/couchbase-docker/blob/master/Dockerfile),  [`enterprise-5.0.0`](https://github.com/bentonam/couchbase-docker/blob/master/Dockerfile),  [`enterprise-4.6.3`](https://github.com/bentonam/couchbase-docker/blob/master/Dockerfile)
 - [`community`](https://github.com/bentonam/couchbase-docker/blob/community/Dockerfile), [`community-5.0.1`](https://github.com/bentonam/couchbase-docker/blob/community/Dockerfile),[`community-4.5.1`](https://github.com/bentonam/couchbase-docker/blob/community/Dockerfile)
 
 ## Examples
