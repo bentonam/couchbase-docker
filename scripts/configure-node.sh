@@ -5,7 +5,7 @@ NODE_TYPE=${NODE_TYPE:='DEFAULT'}
 CLUSTER_USERNAME=${CLUSTER_USERNAME:='Administrator'}
 CLUSTER_PASSWORD=${CLUSTER_PASSWORD:='password'}
 CLUSTER_RAMSIZE=${CLUSTER_RAMSIZE:=400}
-SERVICES=${SERVICES:='data,index,query,fts'}
+SERVICES=${SERVICES:='data,index,query,fts,eventing'}
 BUCKET=${BUCKET:='default'}
 BUCKET_RAMSIZE=${BUCKET_RAMSIZE:=100}
 BUCKET_TYPE=${BUCKET_TYPE:=couchbase}
@@ -16,7 +16,7 @@ RBAC_ROLES=${RBAC_ROLES:='admin'}
 sleep 2
 echo ' '
 printf 'Waiting for Couchbase Server to start'
-until $(curl --output /dev/null --silent --head --fail http://localhost:8091/pools); do
+until $(curl --output /dev/null --silent --head --fail -u $CLUSTER_USERNAME:$CLUSTER_PASSWORD http://localhost:8091/pools); do
   printf .
   sleep 1
 done
