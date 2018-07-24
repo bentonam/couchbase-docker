@@ -1,6 +1,6 @@
 # Couchbase Docker
 
-A Couchbase container running Couchbase Enterprise Edition v5.1.0 that can be fully configured through environment variables.  See all of the environment variables below for the possible configuration combinations.  
+A Couchbase container running [Couchbase Enterprise Edition v5.5.0](https://www.couchbase.com) that can be fully configured through environment variables.  See all of the environment variables below for the possible configuration combinations.  
 
 ## Tags and Dockerfile
 
@@ -9,11 +9,12 @@ Supported tags and Dockerfile links
 ##### Enterprise
 
 - [`latest`](https://github.com/bentonam/couchbase-docker/blob/master/Dockerfile)
-- [`5.5.0-Mar`](https://github.com/bentonam/couchbase-docker/blob/master/Dockerfile)
+- [`5.5.0`](https://github.com/bentonam/couchbase-docker/blob/master/Dockerfile)
 - [`enterprise`](https://github.com/bentonam/couchbase-docker/blob/master/Dockerfile)
+- [`enterprise-5.5.0`](https://github.com/bentonam/couchbase-docker/blob/master/Dockerfile)
 - [`enterprise-5.1.0`](https://github.com/bentonam/couchbase-docker/blob/master/Dockerfile)
-- [`enterprise-5.0.1`](https://github.com/bentonam/couchbase-docker/blob/master/Dockerfile) 
-- [`enterprise-5.0.0`](https://github.com/bentonam/couchbase-docker/blob/master/Dockerfile) 
+- [`enterprise-5.0.1`](https://github.com/bentonam/couchbase-docker/blob/master/Dockerfile)
+- [`enterprise-5.0.0`](https://github.com/bentonam/couchbase-docker/blob/master/Dockerfile)
 - [`enterprise-4.6.3`](https://github.com/bentonam/couchbase-docker/blob/master/Dockerfile)
 
 ##### Community
@@ -82,9 +83,14 @@ The following environment variables are supported.  None of these environment va
 
 - `AUTO_FAILOVER_TIMEOUT`: A timeout in seconds that expires to trigger the auto failover.  The default value is **120**.
 - `BUCKET`: The name of the bucket to create and use.  The default value is **default**.
+- `BUCKET_COMPRESSION`: The bucket compression mode to use.  The default value is **off**.  Valid values are:
+	- off - No compression
+	- passive - Accept compressed documents but do not actively compress uncompressed documents
+	- active - Accept compressed documents and actively compress uncompressed documents
 - `BUCKET_EVICTION_POLICY`: The evication policy to use.  The default value is **valueOnly**.  Valid values are:
 	- valueOnly - Only eject the document values from memory, keeping the key
 	- fullEviction - Eject both the key and the value from memory
+- `BUCKET_MAX_TTL`: The maximum TTL the bucket will accept.  The default value is **0**
 - `BUCKET_PRIORITY`: The bucket priority compared to other buckets.  The default value is **high**.  Valid values are:
 	- high
 	- low
@@ -98,6 +104,8 @@ The following environment variables are supported.  None of these environment va
 	- couchbase - This should almost always be used
 	- memcached - This really should never be used unless absolutely needed and justified
 - `CLUSTER`: The IP Address or Hostname of another node / container that is already in the cluster.  This is only used if `NODE_TYPE` is not `DEFAULT`. The default is an empty string.
+- `CLUSTER_ANALYTICS_RAMSIZE`: The per-node Analytics service RAM quota in MB. The default value is **1024**.
+- `CLUSTER_EVENTING_RAMSIZE`: The per-node Eventing service RAM quota in MB. The default value is **256**.
 - `CLUSTER_FTS_RAMSIZE`: The per-node FTS service RAM quota in MB. The default value is **256**.
 - `CLUSTER_INDEX_RAMSIZE`: The per-node index services RAM quota in MB.  The default value is **256**.
 - `CLUSTER_NAME`: The name of the cluster, if none is specified an empty string is used.

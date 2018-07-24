@@ -4,7 +4,7 @@ set -m
 NODE_TYPE=${NODE_TYPE:='DEFAULT'}
 CLUSTER_USERNAME=${CLUSTER_USERNAME:='Administrator'}
 CLUSTER_PASSWORD=${CLUSTER_PASSWORD:='password'}
-CLUSTER_RAMSIZE=${CLUSTER_RAMSIZE:=400}
+CLUSTER_RAMSIZE=${CLUSTER_RAMSIZE:=300}
 SERVICES=${SERVICES:='data,index,query,fts,eventing'}
 BUCKET=${BUCKET:='default'}
 BUCKET_RAMSIZE=${BUCKET_RAMSIZE:=100}
@@ -40,17 +40,25 @@ if [[ "${NODE_TYPE}" == "DEFAULT" ]]; then
   echo Configuring Cluster
   CMD="/opt/couchbase/bin/couchbase-cli cluster-init"
   CMD="$CMD --cluster localhost:8091"
-  CMD="$CMD --cluster-username=$CLUSTER_USERNAME"
-  CMD="$CMD --cluster-password=$CLUSTER_PASSWORD"
-  CMD="$CMD --cluster-ramsize=$CLUSTER_RAMSIZE"
+  CMD="$CMD --cluster-username $CLUSTER_USERNAME"
+  CMD="$CMD --cluster-password $CLUSTER_PASSWORD"
+  CMD="$CMD --cluster-ramsize $CLUSTER_RAMSIZE"
   # is the index service going to be running?
   if [[ $SERVICES == *"index"* ]]; then
-    CMD="$CMD --index-storage-setting=${INDEX_STORAGE_SETTING:=default}"
-    CMD="$CMD --cluster-index-ramsize=${CLUSTER_INDEX_RAMSIZE:=256}"
+    CMD="$CMD --index-storage-setting ${INDEX_STORAGE_SETTING:=default}"
+    CMD="$CMD --cluster-index-ramsize ${CLUSTER_INDEX_RAMSIZE:=256}"
   fi
   # is the fts service going to be running?
-  if [[ $SERVICES == *"index"* ]]; then
-    CMD="$CMD --cluster-fts-ramsize=${CLUSTER_FTS_RAMSIZE:=256}"
+  if [[ $SERVICES == *"fts"* ]]; then
+    CMD="$CMD --cluster-fts-ramsize ${CLUSTER_FTS_RAMSIZE:=256}"
+  fi
+  # is the eventing service going to be running?
+  if [[ $SERVICES == *"eventing"* ]]; then
+    CMD="$CMD --cluster-eventing-ramsize ${CLUSTER_EVENTING_RAMSIZE:=256}"
+  fi
+  # is the analytics service going to be running?
+  if [[ $SERVICES == *"analytics"* ]]; then
+    CMD="$CMD --cluster-analytics-ramsize ${CLUSTER_ANALYTICS_RAMSIZE:=1024}"
   fi
   CMD="$CMD --services=$SERVICES"
   CMD="$CMD > /dev/null"
@@ -59,34 +67,36 @@ if [[ "${NODE_TYPE}" == "DEFAULT" ]]; then
   echo Setting the Cluster Name
   /opt/couchbase/bin/couchbase-cli setting-cluster \
     --cluster localhost:8091 \
-    --user=$CLUSTER_USERNAME \
-    --password=$CLUSTER_PASSWORD \
-    --cluster-name="$(echo $CLUSTER_NAME)" \
+    --user $CLUSTER_USERNAME \
+    --password $CLUSTER_PASSWORD \
+    --cluster-name "$(echo $CLUSTER_NAME)" \
   > /dev/null
 
   echo Configuring Auto Failover Settings
   /opt/couchbase/bin/couchbase-cli setting-autofailover \
     --cluster localhost:8091 \
-    --user=$CLUSTER_USERNAME \
-    --password=$CLUSTER_PASSWORD \
-    --auto-failover-timeout=${AUTO_FAILOVER_TIMEOUT:=120} \
-    --enable-auto-failover=${ENABLE_AUTO_FAILOVER:=1} \
+    --user $CLUSTER_USERNAME \
+    --password $CLUSTER_PASSWORD \
+    --auto-failover-timeout ${AUTO_FAILOVER_TIMEOUT:=120} \
+    --enable-auto-failover ${ENABLE_AUTO_FAILOVER:=1} \
   > /dev/null
 
   # create the bucket
   echo Creating $BUCKET bucket
   /opt/couchbase/bin/couchbase-cli bucket-create \
     --cluster localhost:8091 \
-    --user=$CLUSTER_USERNAME \
-    --password=$CLUSTER_PASSWORD \
-    --bucket=$BUCKET \
-    --bucket-ramsize=$BUCKET_RAMSIZE \
-    --bucket-type=$BUCKET_TYPE \
-    --bucket-priority=${BUCKET_PRIORITY:=high} \
-    --enable-index-replica=${ENABLE_INDEX_REPLICA:=0} \
-    --enable-flush=${ENABLE_FLUSH:=0} \
-    --bucket-replica=${BUCKET_REPLICA:=1} \
-    --bucket-eviction-policy=${BUCKET_EVICTION_POLICY:=valueOnly} \
+    --username $CLUSTER_USERNAME \
+    --password $CLUSTER_PASSWORD \
+    --bucket $BUCKET \
+    --bucket-ramsize $BUCKET_RAMSIZE \
+    --bucket-type $BUCKET_TYPE \
+    --bucket-priority ${BUCKET_PRIORITY:=low} \
+    --enable-index-replica ${ENABLE_INDEX_REPLICA:=0} \
+    --enable-flush ${ENABLE_FLUSH:=0} \
+    --bucket-replica ${BUCKET_REPLICA:=1} \
+    --bucket-eviction-policy ${BUCKET_EVICTION_POLICY:=valueOnly} \
+    --compression-mode ${BUCKET_COMPRESSION:=off} \
+    --max-ttl ${BUCKET_MAX_TTL:=0} \
     --wait \
   > /dev/null
 
@@ -94,8 +104,8 @@ if [[ "${NODE_TYPE}" == "DEFAULT" ]]; then
   echo Creating RBAC user $RBAC_USERNAME
   /opt/couchbase/bin/couchbase-cli user-manage \
     --cluster localhost:8091 \
-    --username=$CLUSTER_USERNAME \
-    --password=$CLUSTER_PASSWORD \
+    --username $CLUSTER_USERNAME \
+    --password $CLUSTER_PASSWORD \
     --set \
     --rbac-username $RBAC_USERNAME \
     --rbac-password $RBAC_PASSWORD \
