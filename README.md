@@ -9,6 +9,8 @@ Supported tags and Dockerfile links
 ##### Enterprise
 
 - [`latest`](https://github.com/bentonam/couchbase-docker/blob/master/Dockerfile)
+- [`5.5.2`](https://github.com/bentonam/couchbase-docker/blob/master/Dockerfile)
+- [`5.5.1`](https://github.com/bentonam/couchbase-docker/blob/master/Dockerfile)
 - [`5.5.0`](https://github.com/bentonam/couchbase-docker/blob/master/Dockerfile)
 - [`enterprise`](https://github.com/bentonam/couchbase-docker/blob/master/Dockerfile)
 - [`enterprise-5.5.0`](https://github.com/bentonam/couchbase-docker/blob/master/Dockerfile)
