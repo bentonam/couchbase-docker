@@ -28,7 +28,7 @@ echo Starting configuration for $NODE_TYPE node
 echo Configuring Individual Node Settings
 /opt/couchbase/bin/couchbase-cli node-init \
   --cluster localhost:8091 \
-  --user=$CLUSTER_USERNAME \
+  --username=$CLUSTER_USERNAME \
   --password=$CLUSTER_PASSWORD \
   --node-init-data-path=${NODE_INIT_DATA_PATH:='/opt/couchbase/var/lib/couchbase/data'} \
   --node-init-index-path=${NODE_INIT_INDEX_PATH:='/opt/couchbase/var/lib/couchbase/indexes'} \
@@ -67,7 +67,7 @@ if [[ "${NODE_TYPE}" == "DEFAULT" ]]; then
   echo Setting the Cluster Name
   /opt/couchbase/bin/couchbase-cli setting-cluster \
     --cluster localhost:8091 \
-    --user $CLUSTER_USERNAME \
+    --username $CLUSTER_USERNAME \
     --password $CLUSTER_PASSWORD \
     --cluster-name "$(echo $CLUSTER_NAME)" \
   > /dev/null
@@ -75,7 +75,7 @@ if [[ "${NODE_TYPE}" == "DEFAULT" ]]; then
   echo Configuring Auto Failover Settings
   /opt/couchbase/bin/couchbase-cli setting-autofailover \
     --cluster localhost:8091 \
-    --user $CLUSTER_USERNAME \
+    --username $CLUSTER_USERNAME \
     --password $CLUSTER_PASSWORD \
     --auto-failover-timeout ${AUTO_FAILOVER_TIMEOUT:=120} \
     --enable-auto-failover ${ENABLE_AUTO_FAILOVER:=1} \
@@ -120,7 +120,7 @@ if [[ "${NODE_TYPE}" == "DEFAULT" ]]; then
   fi
   CMD="/opt/couchbase/bin/couchbase-cli setting-alert"
   CMD="$CMD --cluster localhost:8091"
-  CMD="$CMD --user=$CLUSTER_USERNAME"
+  CMD="$CMD --username=$CLUSTER_USERNAME"
   CMD="$CMD --password=$CLUSTER_PASSWORD"
   CMD="$CMD --enable-email-alert=$ENABLE_EMAIL_ALERT"
   if [[ "${ENABLE_EMAIL_ALERT}" == "1" ]]; then
@@ -150,7 +150,7 @@ if [[ "${NODE_TYPE}" == "DEFAULT" ]]; then
   echo Configuring Compaction Settings
   CMD="/opt/couchbase/bin/couchbase-cli setting-compaction"
   CMD="$CMD --cluster localhost:8091"
-  CMD="$CMD --user=$CLUSTER_USERNAME"
+  CMD="$CMD --username=$CLUSTER_USERNAME"
   CMD="$CMD --password=$CLUSTER_PASSWORD"
   CMD="$CMD --compaction-db-percentage=${COMPACTION_DB_PERCENTAGE:=30}"
   CMD="$CMD --compaction-view-percentage=${COMPACTION_VIEW_PERCENTAGE:=30}"
@@ -217,7 +217,7 @@ else
   echo Adding new Node to the cluster at $CLUSTER
   /opt/couchbase/bin/couchbase-cli server-add \
     --cluster $CLUSTER \
-    --user=$CLUSTER_USERNAME \
+    --username=$CLUSTER_USERNAME \
     --password=$CLUSTER_PASSWORD \
     --server-add="$(ifconfig eth0 | grep inet | grep -o 'inet addr:[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}' | cut -c 11-):8091" \
     --server-add-username=$CLUSTER_USERNAME \
@@ -227,16 +227,16 @@ else
 
   if [[ "${REBALANCE}" == "1" ]]; then
     echo Rebalancing Cluster
-    if (/opt/couchbase/bin/couchbase-cli rebalance-status --cluster $CLUSTER --user $CLUSTER_USERNAME --password  $CLUSTER_PASSWORD | grep -q running) then
+    if (/opt/couchbase/bin/couchbase-cli rebalance-status --cluster $CLUSTER --username $CLUSTER_USERNAME --password  $CLUSTER_PASSWORD | grep -q running) then
       echo Only one rebalance operation can be done at a time, waiting for the current rebalance to complete
-      until $(couchbase-cli rebalance-status --cluster $CLUSTER --user $CLUSTER_USERNAME --password $CLUSTER_PASSWORD | grep -q notRunning); do
+      until $(couchbase-cli rebalance-status --cluster $CLUSTER --username $CLUSTER_USERNAME --password $CLUSTER_PASSWORD | grep -q notRunning); do
         echo .
         sleep 5
       done
     fi
     /opt/couchbase/bin/couchbase-cli rebalance \
       --cluster $CLUSTER \
-      --user=$CLUSTER_USERNAME \
+      --username=$CLUSTER_USERNAME \
       --password=$CLUSTER_PASSWORD \
     > /dev/null
   fi
